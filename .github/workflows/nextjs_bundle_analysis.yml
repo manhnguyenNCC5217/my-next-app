@@ -70,13 +70,16 @@ jobs:
           name: bundle
           path: .next/analyze/__bundle_analysis.json
 
+      - name: Log runID
+        run: echo "runID ${{ github.event.workflow_run.id }}" 
+
       - name: Download base branch bundle stats
         uses: dawidd6/action-download-artifact@v2
         if: success() && github.event.number
         with:
           workflow: nextjs_bundle_analysis.yml
-          branch: ${{ github.event.pull_request.base.ref }}
           path: .next/analyze/base
+          run_id: ${{ github.event.workflow_run.id }}
 
       # And here's the second place - this runs after we have both the current and
       # base branch bundle stats, and will compare them to determine what changed.
